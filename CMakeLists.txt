@@ -3,4 +3,4 @@ project(PA02_Template)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(PA02_Template main.cpp)
+add_executable(PA02_Template main.cpp board.h player.h gameLauncher.cpp gameLauncher.h board.cpp player.cpp)
