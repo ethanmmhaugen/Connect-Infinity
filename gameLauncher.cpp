@@ -30,14 +30,20 @@ void gameLauncher::printMenu() {
 }
 
 void gameLauncher::play(){
-    gameBoard = board(rows, cols, win, aiGame);
-    gameBoard.resetBoard();
+    gameBoard = new board(rows, cols, win, aiGame, p1symbol, p2symbol, aiDifficulty);
+    gameBoard->resetBoard();
     do {
-        gameBoard.takeTurn();
-        gameBoard.turnSwitch();
+        gameBoard->takeTurn();
+        gameBoard->turnSwitch();
         //Check win conditions for current player's piece
-    }while(!gameBoard.checkwin(gameBoard.getPrevPlayer()->getPiece()));
-    gameBoard.declareWinner();
+    }while(!gameBoard->checkwin(gameBoard->getPrevPlayer()->getPiece()) && !gameBoard->checkTie());
+    if(!gameBoard->checkTie()){
+        gameBoard->declareWinner();
+    }
+    else{
+        gameBoard->declareTie();
+    }
+
 
 }
 
@@ -68,7 +74,7 @@ void gameLauncher::printOptions(){
             boardOptions();
         }
         else if(toupper(choice) == 'S'){
-            gameBoard.turnSwitch();
+            gameBoard->turnSwitch();
         }
         else if(toupper(choice) == 'D'){
             swapDifficulty();
@@ -90,16 +96,15 @@ void gameLauncher::swapDifficulty(){
         cout << "Easy: N\n" << "Medium: M\n" << "Hard: H\n" << "Exit: E" << endl;
         cout << "Please enter a character: " << endl;
         cin >> choice;
-        int n;
         switch(toupper(choice)){
             case 'N':
-                n = 0;
+                aiDifficulty = 0;
                 break;
             case 'M':
-                n = 2;
+                aiDifficulty = 3;
                 break;
             case 'H':
-                n = 8;
+                aiDifficulty = 8;
                 break;
             case 'E':
                 return;
@@ -123,21 +128,19 @@ void gameLauncher::boardOptions() {
         cin >> choice;
         if (toupper(choice) == 'R') {
             cout << "Enter number of rows: ";
-            cin >> num;
-            gameBoard.setRows(num);
+            cin >> rows;
         } else if (toupper(choice) == 'C') {
             cout << "Enter number of columns: ";
-            cin >> num;
-            gameBoard.setCols(num);
+            cin >> cols;
         } else if (toupper(choice) == 'W') {
             do {
                 cout << "Enter number of pieces to win: ";
                 cin >> num;
-                if (num > gameBoard.getCols() && num > gameBoard.getRows()) {
-                    cout << "Too big. Win Length has to be smaller or equal to either rows or columns\n";
+                if (num > cols && num > rows) {
+                    cout << "Too big-> Win Length has to be smaller or equal to either rows or columns\n";
                 }
-            } while (num > gameBoard.getCols() && num > gameBoard.getRows());
-            gameBoard.setWinLength(num);
+            } while (num > cols && num > rows);
+            win = num;
         } else if (toupper(choice) == 'E') {
             break;
         } else {
@@ -147,12 +150,9 @@ void gameLauncher::boardOptions() {
     }
 }
 void gameLauncher::setPlayerSymbols() {
-    char symbol;
     cout << "Enter Player 1's Symbol: " << endl;
-    cin >> symbol;
-    gameBoard.setP1(symbol);
+    cin >> p1symbol;
     cout << "Enter Player 2's Symbol: " << endl;
-    cin >> symbol;
-    gameBoard.setP2(symbol);
+    cin >> p2symbol;
 }
 

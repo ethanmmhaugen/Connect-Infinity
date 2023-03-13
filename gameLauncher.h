@@ -11,13 +11,16 @@
 
 class gameLauncher {
 private:
-    board gameBoard;
+    board* gameBoard;
 
     //menu options that will impact game state
     bool aiGame = true;
     int rows = 6;
     int cols = 7;
     int win = 4;
+    char p1symbol = '$';
+    char p2symbol = '#';
+    int aiDifficulty = 3;
 
 public:
     gameLauncher();

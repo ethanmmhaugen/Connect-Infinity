@@ -64,6 +64,11 @@ void player::findRow(board& myBoard, int rows){
     }
 }
 
+void player::setDifficulty(int i) {
+
+}
+
+
 vector<int> aiPlayer::minimax(board& miniBoard, int depth, int alpha, int beta, bool maximizingPlayer){
     vector<int> valid_locations = miniBoard.get_valid_locations();
     vector<int> result;

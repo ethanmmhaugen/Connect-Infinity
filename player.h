@@ -12,23 +12,7 @@
 using namespace std;
 
 class board;
-/*class board{
-    public:
-    char** getBoard();
-    int getRows();
-    vector<int> get_valid_locations();
-    int getCols();
-    int getWinLength();
-    char getPlayerPiece();
-    bool is_terminal_node();
-    bool checkwin(char piece);
-    int random_available_column(vector<int> locations);
-    void placePiece(int rows, int col, char piece);
 
-
-
-};
-*/
 class player{
 private:
 protected:
@@ -42,7 +26,7 @@ public:
         piece = p;
         playerNum = num;
     }
-
+    ~player() = default;
     virtual void takeTurn(int rows, int COLS, board& myBoard);
 
     void colChoice(int i);
@@ -55,11 +39,11 @@ public:
         piece = p;
     }
 
-    char getPiece(){
+    char getPiece() const{
         return piece;
     }
 
-    int getPlayerNum(){
+    int getPlayerNum() const{
         return playerNum;
     }
 
@@ -68,8 +52,7 @@ public:
     }
 
 
-
-
+    virtual void setDifficulty(int i);
 };
 
 class aiPlayer : public player{
@@ -78,13 +61,14 @@ private:
     int aiDifficulty = 3;
 public:
     aiPlayer(char p, int num);
-    void setDifficulty(int i){
+
+    void setDifficulty(int i) override{
         aiDifficulty = i;
     }
-    int getDifficulty(){
+    int getDifficulty() const{
         return aiDifficulty;
     }
-    void takeTurn(int rows, int COLS, board& myBoard);
+    void takeTurn(int rows, int COLS, board& myBoard) override;
 
     vector<int> minimax(board& miniBoard, int depth, int alpha, int beta, bool maximizingPlayer);
     int scorePosition(char piece, char opponents_piece, board& scoringBoard);

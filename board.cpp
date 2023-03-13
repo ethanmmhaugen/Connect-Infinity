@@ -14,8 +14,6 @@ board::board(const board& oldBoard){
     ROWS = oldBoard.ROWS;
     COLS = oldBoard.COLS;
     WIN_LENGTH = oldBoard.WIN_LENGTH;
-    p1symbol = oldBoard.p1symbol;
-    p2symbol = oldBoard.p2symbol;
 
     myBoard = new char*[ROWS];
     for(int i = 0; i<ROWS; i++){
@@ -32,7 +30,16 @@ board::board(const board& oldBoard){
     prevPlayer = oldBoard.prevPlayer;
 }
 
-board::board(int rows, int cols, int win_length, bool gameState){
+board::~board(){
+    currentPlayer->~player();
+    prevPlayer->~player();
+    for(int i = 0; i<ROWS; i++){
+        delete[] myBoard[i];
+    }
+    delete[] myBoard;
+}
+
+board::board(int rows, int cols, int win_length, bool gameState, char p1symbol, char p2symbol, int aiDifficulty){
     ROWS = rows;
     COLS = cols;
     WIN_LENGTH = win_length;
@@ -43,12 +50,14 @@ board::board(int rows, int cols, int win_length, bool gameState){
     player1 = new player(p1symbol, 1);
     if(gameState){
         player2 = new aiPlayer(p2symbol, 2);
+        player2->setDifficulty(aiDifficulty);
     }
     else{
         player2 = new player(p2symbol, 2);
     }
     currentPlayer = player1;
     prevPlayer = player2;
+
 }
 
 void board::takeTurn(){
@@ -157,10 +166,10 @@ bool board::checkwin(char piece){
     return win;
 }
 
-bool board::checkTie(char** board) {
+bool board::checkTie() {
     bool over = true;
     for(int i = 0; i<COLS; i++) {
-        if (board[0][i] == '_') {
+        if (myBoard[0][i] == '_') {
             over = false;
         }
     }
@@ -185,9 +194,13 @@ void board::declareWinner(){
     cout << "Game Over!!! Player " << prevPlayer->getPlayerNum() << " is the WINNER!" << endl;
 }
 
+void board::declareTie(){
+    printBoard();
+    cout << "Game Over!!! Tie Game!" << endl;
+}
 
 bool board::is_terminal_node(){
-    if(checkwin(player1->getPiece()) || checkwin(player2->getPiece()) || checkTie(myBoard)){
+    if(checkwin(player1->getPiece()) || checkwin(player2->getPiece()) || checkTie()){
         return true;
     }
     else{
@@ -239,12 +252,10 @@ int board::getCols() const{
     return COLS;
 }
 
+//This is only called through minimax, so prevPlayer
+//should always be the human player
 char board::getPlayerPiece() {
-    return p1symbol;
-}
-
-char board::getAiPiece() {
-    return p2symbol;
+    return player1->getPiece();
 }
 
 int board::getWinLength() const{
@@ -262,11 +273,7 @@ char** board::getBoard(){
     return myBoard;
 }
 
-void board::setP1(char symbol) {
-    p1symbol = symbol;
-}
-
-void board::setP2(char symbol) {
-    p2symbol = symbol;
+void board::setAiDifficulty(int n){
+    //aiDifficulty = n;
 }
 

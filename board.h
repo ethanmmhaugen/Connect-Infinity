@@ -17,9 +17,9 @@ class board{
 
 private:
     //board info
-    int ROWS = 6;
-    int COLS = 7;
-    int WIN_LENGTH = 4;
+    int ROWS;
+    int COLS;
+    int WIN_LENGTH;
     char** myBoard;
 
     //Players info
@@ -27,16 +27,17 @@ private:
     player* player2;
     player* currentPlayer;
     player* prevPlayer;
-    char p1symbol = '$';
-    char p2symbol = '#';
+
 
 
 
 public:
     board();
     board(const board& oldBoard);
+    ~board();
 
-    board(int rows, int cols, int win_length, bool gameState);
+    board(int rows, int cols, int win_length, bool gameState, char p1symbol, char p2symbol, int aiDifficulty);
+
 
     void takeTurn();
 
@@ -51,9 +52,10 @@ public:
     //regular connect 4 activites
     void placePiece(int row, int col, char piece);
     bool checkwin(char piece);
-    bool checkTie(char** board);
+    bool checkTie();
     void turnSwitch();
     void declareWinner();
+    void declareTie();
 
     //functions for minimax algo
     bool is_terminal_node();
@@ -66,13 +68,11 @@ public:
     int getRows() const;
     int getCols() const;
     char getPlayerPiece();
-    char getAiPiece();
     int getWinLength() const;
     player* getCurrentPlayer();
     player* getPrevPlayer();
     char** getBoard();
-    void setP1(char symbol);
-    void setP2(char symbol);
+    void setAiDifficulty(int n);
 
 };
 
