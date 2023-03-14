@@ -6,6 +6,11 @@
 #include "board.h"
 
 
+player::player(char p, int num){
+    piece = p;
+    playerNum = num;
+}
+
 void player::takeTurn(int rows, int COLS, board& myBoard) {
     int columnChoice;
     do {
@@ -24,6 +29,14 @@ void player::takeTurn(int rows, int COLS, board& myBoard) {
 aiPlayer::aiPlayer(char p, int num) {
     piece = p;
     playerNum = num;
+}
+
+void aiPlayer::setDifficulty(int i) {
+    aiDifficulty = i;
+}
+
+int aiPlayer::getDifficulty() const{
+    return aiDifficulty;
 }
 
 void aiPlayer::takeTurn(int ROWS, int COLS, board& myBoard){
@@ -64,8 +77,27 @@ void player::findRow(board& myBoard, int rows){
     }
 }
 
-void player::setDifficulty(int i) {
+void player::setPlayerNum(int i){
+    playerNum = i;
+}
 
+void player::setPiece(char p){
+    piece = p;
+}
+
+char player::getPiece() const{
+    return piece;
+}
+
+int player::getPlayerNum() const{
+    return playerNum;
+}
+
+int* player::getPlayerMove(){
+    return playerMove;
+}
+
+void player::setDifficulty(int i) {
 }
 
 
@@ -73,8 +105,6 @@ vector<int> aiPlayer::minimax(board& miniBoard, int depth, int alpha, int beta, 
     vector<int> valid_locations = miniBoard.get_valid_locations();
     vector<int> result;
     int ROWS = miniBoard.getRows();
-    int COLS = miniBoard.getCols();
-    int WIN_LENGTH = miniBoard.getWinLength();
     char playerPiece = miniBoard.getPlayerPiece();
     char aiPiece = piece;
     bool is_terminal = miniBoard.is_terminal_node();
@@ -98,7 +128,7 @@ vector<int> aiPlayer::minimax(board& miniBoard, int depth, int alpha, int beta, 
     }
     else if(maximizingPlayer){
         int value = -1000000;
-        int column = miniBoard.random_available_column(valid_locations);
+        int column = board::random_available_column(valid_locations);
         /*for(int k = 0; k<2-depth; k++){
             cout << "  ";
         }
@@ -140,7 +170,7 @@ vector<int> aiPlayer::minimax(board& miniBoard, int depth, int alpha, int beta, 
     }
     else{
         int value = 1000000;
-        int column = miniBoard.random_available_column(valid_locations);
+        int column = board::random_available_column(valid_locations);
         /*for(int k = 0; k<2-depth; k++){
             cout << "  ";
         //cout << "Minimizing player: Depth is " << depth << endl;

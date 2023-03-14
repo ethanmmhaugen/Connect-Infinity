@@ -35,21 +35,14 @@ public:
     board();
     board(const board& oldBoard);
     ~board();
-
     board(int rows, int cols, int win_length, bool gameState, char p1symbol, char p2symbol, int aiDifficulty);
 
-
-    void takeTurn();
-
-    void resetBoard();
-
-    void printBoard();
-
-    bool checkColumn(int col);
-
-    int findRow(int col);
-
     //regular connect 4 activites
+    void takeTurn();
+    void resetBoard();
+    void printBoard();
+    bool checkColumn(int col);
+    int findRow(int col);
     void placePiece(int row, int col, char piece);
     bool checkwin(char piece);
     bool checkTie();
@@ -60,11 +53,9 @@ public:
     //functions for minimax algo
     bool is_terminal_node();
     vector<int> get_valid_locations();
-    int random_available_column(vector<int> locations);
+    static int random_available_column(vector<int> locations);
 
-    void setRows(int i);
-    void setCols(int i);
-    void setWinLength(int i);
+    //useful getters and setters
     int getRows() const;
     int getCols() const;
     char getPlayerPiece();
@@ -72,7 +63,6 @@ public:
     player* getCurrentPlayer();
     player* getPrevPlayer();
     char** getBoard();
-    void setAiDifficulty(int n);
 
 };
 

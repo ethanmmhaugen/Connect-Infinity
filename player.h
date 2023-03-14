@@ -21,36 +21,20 @@ protected:
     int playerNum;
 public:
     player()= default;
-
-    player(char p, int num){
-        piece = p;
-        playerNum = num;
-    }
+    player(char p, int num);
     ~player() = default;
+
+
     virtual void takeTurn(int rows, int COLS, board& myBoard);
-
     void colChoice(int i);
-
     void findRow(board& myBoard, int rows);
-    void setPlayerNum(int i){
-        playerNum = i;
-    }
-    void setPiece(char p){
-        piece = p;
-    }
 
-    char getPiece() const{
-        return piece;
-    }
-
-    int getPlayerNum() const{
-        return playerNum;
-    }
-
-    int* getPlayerMove(){
-        return playerMove;
-    }
-
+    //getters and setters
+    void setPlayerNum(int i);
+    void setPiece(char p);
+    char getPiece() const;
+    int getPlayerNum() const;
+    int* getPlayerMove();
 
     virtual void setDifficulty(int i);
 };
@@ -62,16 +46,12 @@ private:
 public:
     aiPlayer(char p, int num);
 
-    void setDifficulty(int i) override{
-        aiDifficulty = i;
-    }
-    int getDifficulty() const{
-        return aiDifficulty;
-    }
+    void setDifficulty(int i) override;
+    int getDifficulty() const;
     void takeTurn(int rows, int COLS, board& myBoard) override;
 
     vector<int> minimax(board& miniBoard, int depth, int alpha, int beta, bool maximizingPlayer);
-    int scorePosition(char piece, char opponents_piece, board& scoringBoard);
+    static int scorePosition(char piece, char opponents_piece, board& scoringBoard);
 };
 
 #endif //PA02_TEMPLATE_PLAYER_H

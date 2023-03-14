@@ -4,6 +4,13 @@
 #include "board.h"
 
 board::board(){
+    ROWS = 6;
+    COLS = 7;
+    WIN_LENGTH = 4;
+    player1 = new player();
+    player2 = new player();
+    currentPlayer = player1;
+    prevPlayer = player2;
     myBoard = new char*[ROWS];
     for(int i = 0; i<ROWS; i++){
         myBoard[i] = new char[COLS];
@@ -232,18 +239,6 @@ int board::random_available_column(vector<int> locations){
     return num;
 }
 
-void board::setRows(int i){
-    ROWS = i;
-}
-
-void board::setCols(int i){
-    COLS = i;
-}
-
-void board::setWinLength(int i){
-    WIN_LENGTH = i;
-}
-
 int board::getRows() const{
     return ROWS;
 }
@@ -273,7 +268,4 @@ char** board::getBoard(){
     return myBoard;
 }
 
-void board::setAiDifficulty(int n){
-    //aiDifficulty = n;
-}
 

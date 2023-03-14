@@ -18,13 +18,13 @@ private:
     int rows = 6;
     int cols = 7;
     int win = 4;
-    char p1symbol = '$';
-    char p2symbol = '#';
+    char p1symbol = '1';
+    char p2symbol = '2';
     int aiDifficulty = 3;
 
 public:
     gameLauncher();
-
+    //play creates a board using all the option presets the menu allows me to change
     void play();
     //menu options, changing the game state
     void printMenu();
