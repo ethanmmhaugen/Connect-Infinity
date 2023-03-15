@@ -142,8 +142,11 @@ vector<int> aiPlayer::minimax(board& miniBoard, int depth, int alpha, int beta, 
             colChoice(i);
             findRow(tmpBoard, ROWS);
             tmpBoard.placePiece(playerMove[0], playerMove[1], aiPiece);
+            //tmpBoard.printBoard();
             tmpBoard.turnSwitch();
             vector<int> path = minimax(tmpBoard,depth-1, alpha, beta, false);
+            //tmpBoard.clearPiece(tmpBoard.getPrevPlayer()->getPlayerMove()[0],tmpBoard.getPrevPlayer()->getPlayerMove()[1]);
+            //tmpBoard.printBoard();
             /*for(int k = 0; k<2-depth; k++){
                 cout << "  ";
             }
@@ -183,8 +186,11 @@ vector<int> aiPlayer::minimax(board& miniBoard, int depth, int alpha, int beta, 
             colChoice(i);
             findRow(tmpBoard, ROWS);
             tmpBoard.placePiece(playerMove[0], playerMove[1], playerPiece);
+            //tmpBoard.printBoard();
             tmpBoard.turnSwitch();
             vector<int> path = minimax(tmpBoard,depth-1,  alpha, beta, true);
+            //tmpBoard.clearPiece(tmpBoard.getCurrentPlayer()->getPlayerMove()[0],tmpBoard.getCurrentPlayer()->getPlayerMove()[1]);
+            //tmpBoard.printBoard();
             if(path[0]<value) {
                 value = path[0];
                 column = i;
@@ -217,18 +223,19 @@ vector<int> aiPlayer::minimax(board& miniBoard, int depth, int alpha, int beta, 
 
 int aiPlayer::scorePosition(char piece, char opponents_piece, board& scoringBoard) {
     int score = 0;
-    //Score horizontals
     char** board = scoringBoard.getBoard();
     int rows = scoringBoard.getRows();
     int cols = scoringBoard.getCols();
     int win = scoringBoard.getWinLength();
+
+    //Score horizontals
     for (int i = 0; i < rows; i++) {
         //array of individual rows
         char row_array[cols];
         for (int j = 0; j < cols; j++) {
             row_array[j] = board[i][j];
         }
-        //Window of 4 pieces at a time that we look at for score,
+        //Window of 4 (or win-length) pieces at a time that we look at for score,
         // iterate through and count the pieces
         for (int c = 0; c < cols - (win - 1); c++) {
             //Here we check each window
@@ -246,7 +253,8 @@ int aiPlayer::scorePosition(char piece, char opponents_piece, board& scoringBoar
 
             }
 
-            //now check scores in that window
+            //This was the hard coded scoring system for 4 piece winning state
+            /*
             if (pieceCount == win) {
                 score += 100;
             } else if (opponentCount == (win - 1) && spaceCount == 1) {
@@ -256,6 +264,22 @@ int aiPlayer::scorePosition(char piece, char opponents_piece, board& scoringBoar
             } else if (pieceCount == (win - 2) && spaceCount == 2) {
                 score += 2;
             }
+             */
+
+            if(pieceCount == win){
+                score += 10000;
+            }
+            else if(opponentCount == (win - 1) && spaceCount == 1){
+                score -= 35000;
+            }
+            else{
+                for(int k = 2; k<win; k++){
+                    if(pieceCount == k && spaceCount == (win-k)){
+                        score+= (3*(k*k));
+                    }
+                }
+            }
+
         }
     }
 
@@ -289,7 +313,7 @@ int aiPlayer::scorePosition(char piece, char opponents_piece, board& scoringBoar
             //now check scores in that window
 
             //now check scores in that window
-            if(pieceCount == win){
+            /*if(pieceCount == win){
                 score+=100;
             }
             else if(opponentCount == (win-1) && spaceCount == 1){
@@ -300,6 +324,21 @@ int aiPlayer::scorePosition(char piece, char opponents_piece, board& scoringBoar
             }
             else if(pieceCount == (win-2) && spaceCount == 2){
                 score+=2;
+            }
+            */
+
+            if(pieceCount == win){
+                score += 10000;
+            }
+            else if(opponentCount == (win - 1) && spaceCount == 1){
+                score -= 35000;
+            }
+            else{
+                for(int k = 2; k<win; k++){
+                    if(pieceCount == k && spaceCount == (win-k)){
+                        score+= (3*(k*k));
+                    }
+                }
             }
         }
     }
@@ -322,9 +361,9 @@ int aiPlayer::scorePosition(char piece, char opponents_piece, board& scoringBoar
                     spaceCount++;
                 }
             }
-            //now check scores in that window
 
             //now check scores in that window
+            /*
             if(pieceCount == win){
                 score+=100;
             }
@@ -336,6 +375,20 @@ int aiPlayer::scorePosition(char piece, char opponents_piece, board& scoringBoar
             }
             else if(pieceCount == (win-2) && spaceCount == 2){
                 score+=2;
+            }
+            */
+            if(pieceCount == win){
+                score += 10000;
+            }
+            else if(opponentCount == (win - 1) && spaceCount == 1){
+                score -= 35000;
+            }
+            else{
+                for(int k = 2; k<win; k++){
+                    if(pieceCount == k && spaceCount == (win-k)){
+                        score+= (3*(k*k));
+                    }
+                }
             }
         }
     }
@@ -359,9 +412,9 @@ int aiPlayer::scorePosition(char piece, char opponents_piece, board& scoringBoar
                 }
 
             }
-            //now check scores in that window
 
             //now check scores in that window
+            /*
             if(pieceCount == win){
                 score+=100;
             }
@@ -374,14 +427,31 @@ int aiPlayer::scorePosition(char piece, char opponents_piece, board& scoringBoar
             else if(pieceCount == (win-2) && spaceCount == 2){
                 score+=2;
             }
-        }
-    }
-    for(int i = 0; i<rows; i++){
-        if(board[i][3] == piece){
-            score+=1;
+             */
+
+            if(pieceCount == win){
+                score += 10000;
+            }
+            else if(opponentCount == (win - 1) && spaceCount == 1){
+                score -= 35000;
+            }
+            else{
+                for(int k = 2; k<win; k++){
+                    if(pieceCount == k && spaceCount == (win-k)){
+                        score+= (3*(k*k));
+                    }
+                }
+            }
         }
     }
 
+    if(win>(cols/2)){
+        for(int i = 0; i<rows; i++){
+            if(board[i][cols/2] == piece){
+                score+=1;
+            }
+        }
+    }
     return score;
 }
 
