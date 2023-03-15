@@ -44,6 +44,7 @@ public:
     bool checkColumn(int col);
     int findRow(int col);
     void placePiece(int row, int col, char piece);
+    void clearPiece(int row, int col);
     bool checkwin(char piece);
     bool checkTie();
     void turnSwitch();

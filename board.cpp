@@ -119,6 +119,10 @@ void board::placePiece(int row, int col, char piece){
     currentPlayer->getPlayerMove()[1] = col;
 }
 
+void board::clearPiece(int row, int col){
+    myBoard[row][col] = '_';
+}
+
 bool board::checkwin(char piece){
     bool win = false;
     //check horizontal win conditions
