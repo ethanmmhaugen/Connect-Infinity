@@ -444,7 +444,11 @@ int aiPlayer::scorePosition(char piece, char opponents_piece, board& scoringBoar
             }
         }
     }
+    //This weights the middle column(s) a little higher, assuming that they are neccesary to complete
+    //horizontal or diagonal wins... for expl in regular connect 4, the middle column is stronger
+    //for that reason and in cases where no move is stronger than another, middle should be taken
 
+    //Can update this to affect more than just the exact center column
     if(win>(cols/2)){
         for(int i = 0; i<rows; i++){
             if(board[i][cols/2] == piece){

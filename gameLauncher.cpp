@@ -43,8 +43,7 @@ void gameLauncher::play(){
     else{
         gameBoard->declareTie();
     }
-
-
+    gameBoard->~board();
 }
 
 void gameLauncher::printOptions(){
